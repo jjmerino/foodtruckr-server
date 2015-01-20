@@ -1,0 +1,4 @@
+.idea
+node_modules
+dev_secret.env
+prod_secret.env
