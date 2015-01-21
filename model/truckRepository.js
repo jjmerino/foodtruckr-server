@@ -2,7 +2,7 @@ var q = require('q');
 var request = require('request');
 
 /**
- * Finds trucks in the enclosing rectangle.
+ * Finds trucks in the enclosing rectangle by querying the API
  * @param lat1
  * @param lng1
  * @param lat2

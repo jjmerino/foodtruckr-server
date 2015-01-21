@@ -59,7 +59,7 @@ module.exports.findInRect = function(req,res){
   var center = [(lat1 + lat2)/2,(lng1 + lng2)/2];
 
   var dist = distance(lat1,lng1,lat2,lng2)*500;
-  console.log(dist);
+
   proximity.query(center[0],center[1],dist, function(err, idList){
     if(err){ console.log(err); }
 
