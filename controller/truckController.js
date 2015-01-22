@@ -2,7 +2,6 @@
  * This module handles the logic for the truck routes
  */
 
-
 var redisTrucks = require('../model/truckRepository');
 
 module.exports.findInArea = function(req,res){

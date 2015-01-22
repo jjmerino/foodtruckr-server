@@ -1,18 +1,7 @@
 /**
- * This module provides useful geo related math functions
- */
-var GeoMath = function(){
-};
-
-/**
  * Calculates the distance between two coordinates
- * @param lat1
- * @param lon1
- * @param lat2
- * @param lon2
- * @returns {number}
  */
-GeoMath.prototype.distance = function(lat1, lon1, lat2, lon2) {
+module.exports.distance = function(lat1, lon1, lat2, lon2) {
   var radlat1 = Math.PI * lat1/180;
   var radlat2 = Math.PI * lat2/180;
   var radlon1 = Math.PI * lon1/180;
@@ -26,4 +15,3 @@ GeoMath.prototype.distance = function(lat1, lon1, lat2, lon2) {
   return dist;
 };
 
-module.exports = new GeoMath();

@@ -28,37 +28,38 @@ TruckCache.prototype = Object.create(EventEmitter.prototype);
 
 TruckCache.prototype.constructor = TruckCache;
 
+TruckCache.prototype._persistTrucks = function(trucks){
+  // start transaction
+  var multi = client.multi();
+
+  var coordinates = [];
+
+  trucks.forEach(function(truck) {
+    var truckId = 'truck:' + truck.objectid;
+
+    if(_.any([truck.objectid,truck.latitude,truck.longitude], _.isUndefined)){
+      return;
+    }
+    multi.set(truckId, JSON.stringify(truck), _ifSuccessful(function(){
+        coordinates.push([this.truck.latitude,this.truck.longitude, this.truckId]);
+      }.bind({truck:truck, truckId: truckId})
+    ));
+  });
+
+  // execute transaction
+  multi.exec(_ifSuccessful(function(){
+    proximity.addCoordinates(coordinates,_ifSuccessful(function(){
+      console.log(coordinates.length + ' locations cached in Redis');
+    }));
+  }));
+};
+
 /**
  * fetches all trucks and stores them in redis
  */
 TruckCache.prototype.preFetch = function() {
-  var multi;
-  var coordinates = [];
   console.log('Attempting to cache truck locations');
-  truckService.findAll()
-    .then(function(trucks){
-      // start transaction
-      multi = client.multi();
-
-      trucks.forEach(function(truck) {
-        var truck_id = 'truck:' + truck.objectid;
-
-        if(_.any([truck.objectid,truck.latitude,truck.longitude], _.isUndefined)){
-          return;
-        }
-        multi.set(truck_id, JSON.stringify(truck), _ifSuccessful(function(){
-            coordinates.push([this.truck.latitude,this.truck.longitude, this.truck_id]);
-          }.bind({truck:truck, truck_id: truck_id})
-        ));
-      });
-
-      // execute transaction
-      multi.exec(_ifSuccessful(function(){
-        proximity.addCoordinates(coordinates,_ifSuccessful(function(){
-          console.log(coordinates.length + ' locations cached in Redis');
-        }));
-      }));
-    });
+  truckService.findAll().then(this._persistTrucks);
 };
 
 /**

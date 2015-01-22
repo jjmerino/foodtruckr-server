@@ -1,5 +1,3 @@
-
-
 var q = require('q');
 var request = require('request');
 
@@ -11,11 +9,6 @@ var TruckService = function(){
 };
 /**
  * Finds trucks in the enclosing rectangle by querying the API
- * @param lat1
- * @param lng1
- * @param lat2
- * @param lng2
- * @returns {promise|*|Q.promise}
  */
 TruckService .prototype.findInArea = function(lat1,lng1,lat2,lng2){
   var d = q.defer();
@@ -41,7 +34,6 @@ TruckService .prototype.findInArea = function(lat1,lng1,lat2,lng2){
 };
 /**
  * Fetches all trucks. Use sparingly.
- * @returns {promise|*|Q.promise}
  */
 TruckService .prototype.findAll = function(){
   var d = q.defer();
