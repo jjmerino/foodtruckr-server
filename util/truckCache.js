@@ -8,7 +8,9 @@ var redisGeohash = require('./redisGeohash');
 var client = redisGeohash.client;
 var proximity = redisGeohash.proximity;
 
-// fetches all trucks and stores them in redis using geohashing
+/**
+ * fetches all trucks and stores them in redis
+ */
 var preFetch = function(){
   var multi;
   var coordinates = [];
@@ -52,7 +54,6 @@ var preFetch = function(){
  * Initializes the module, which will make it fetch the truck list every hour.
  */
 module.exports.initialize = function(){
-  // cache into redis every 60 minutes
   preFetch();
   setInterval(preFetch, 60*60*1000);
 };

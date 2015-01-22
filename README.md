@@ -32,6 +32,16 @@ As stated before, the goal of this solution is mainly to provide an efficient wa
 * The truck ids are then indexed by geohashing the coordinates, this allows to do ultra fast proximity searches.
 * A drawback from using Geohashing is that the proximity lookup is approximate. This is not an issue since we don't require super precise distance comparison and we are optimizing for speed.
 * Note that the performance gain from geohashing may not very high because we currently hold only 600+ trucks, but it would matter down the road if we account for more cities or services.
+### File structure
+All files contain a comment block on top that describes their purpose. The following is an overview.
+
+* index.js: loads the app, starts my redis cache utility and maps routes to the controllers.
+* controller folder: this modules are responsible for the logic for specific routes. Currently there is only one route and one controller.
+* model folder: this modules are abstraction layers to sources of data.
+* util folder: this modules are utilities and service providers.
+  * geomath.js: provides some math functions. Currently only one
+  * redisGeohash.js: configures and returns the redis client and proximity library instance
+  * truckCache.js: service that queries the DataSF API periodically and stores the data into Redis.
 
 ### Environments
 An `set_env.sh` script has been provided to set environments. This is not needed in heroku since I set my variables in the admin panel but may be usefull if I need to deploy to EC2 in the future or automate my infrastructure.
@@ -40,12 +50,14 @@ An `set_env.sh` script has been provided to set environments. This is not needed
 * Since application is small, route paths are configured in the index.js file, but the actual logic is delegated to controllers in the controller folder.
 * Access to the Trucks API (DataSF) is abstracted using the Repository pattern.
 
-### Missing things ( Back end ), a.k.a next steps / roadmap
+### Missing things, a.k.a next steps 
 If I were to continue to work on this project the main things to do differently would be:
 * Automated tests. The test files are there, but they are empty. Having a single route to maintain, technical debt was small enough to focus on the functionality and performance before testing. But clearly it would be one of the first things to address if I wanted to add more functionality.
 * Use Travis or another CI provider.
 * More workflow automation. Currently my Gruntfile is not very complete.
-
+* Maybe move the truckCache module into its own microservice (popular these days!)
+* Implement a message queue for a logging solution. Maybe RabbitMQ or an ELK stack.
+* Include more services, APIs!
 
 ## Front end Considerations
 

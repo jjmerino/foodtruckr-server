@@ -3,8 +3,7 @@
  */
 
 
-var redisTrucks = require('../model/truckRedisRepository'),
-  url = require('url');
+var redisTrucks = require('../model/truckRedisRepository');
 
 module.exports.findInRect = function(req,res){
   var lat1 = +req.params.lat1;

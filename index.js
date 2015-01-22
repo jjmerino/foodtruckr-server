@@ -14,12 +14,13 @@ if(config.port === undefined){
   return;
 }
 
+// enable cors access
 app.use(function(req, res, next){
   res.header('Access-Control-Allow-Origin','*');
   next();
 });
 
-// Routes
+// configure routes to the controllers
 app.get('/findInRect/:lat1/:lng1/:lat2/:lng2', truckController.findInRect);
 
 // geohashes trucks into redis
