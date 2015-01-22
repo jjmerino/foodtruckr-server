@@ -57,6 +57,7 @@ An `set_env.sh` script has been provided to set environments. This is not needed
 If I were to continue to work on this project the main things to do differently would be (in order of priority):
 * Automated tests. The test files are there, but they are empty. Having a single route to maintain, technical debt was small enough to focus on the functionality and performance before testing. But clearly it would be one of the first things to address if I wanted to add more functionality.
 * More workflow automation. Currently my Gruntfile is not very complete.
+* Test and handle edge cases.
 * Use Travis or another CI provider.
 * Maybe move the truckCache module into its own micro service (popular word these days)
 * Implement a RabbitMQ message queue for a logging solution and other tasks, including the truckCache.
