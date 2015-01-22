@@ -1,3 +1,7 @@
+/*
+ * This module provides an abstraction layer to query the DataSF foot trucks api
+ */
+
 var q = require('q');
 var request = require('request');
 
