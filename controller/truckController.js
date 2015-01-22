@@ -89,7 +89,7 @@ function distance(lat1, lon1, lat2, lon2) {
   var radlat2 = Math.PI * lat2/180;
   var radlon1 = Math.PI * lon1/180;
   var radlon2 = Math.PI * lon2/180;
-  var theta = lon1-lon2;
+  var theta = radlon1-radlon2;
   var radtheta = Math.PI * theta/180;
   var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
   dist = Math.acos(dist);
