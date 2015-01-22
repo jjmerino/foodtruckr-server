@@ -12,6 +12,7 @@
   "dependencies": {
     "express": "^4.11.0",
     "geo-proximity": "^1.2.1",
+    "lodash": "^2.4.1",
     "q": "^1.1.2",
     "redis": "^0.12.1",
     "request": "^2.51.0"

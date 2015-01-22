@@ -3,6 +3,7 @@ var truckService = require('./truckService');
 var redisGeohash = require('./redisGeohash');
 var client = redisGeohash.client;
 var proximity = redisGeohash.proximity;
+var _ = require('lodash');
 
 /**
  * Handles periodically fetching the complete truck list and storing it in redis using geohashing.
@@ -10,6 +11,17 @@ var proximity = redisGeohash.proximity;
  */
 var TruckCache = function() {
   this.interval = null;
+};
+
+// handles callbacks for consistent error handling
+var _ifSuccessful = function(callback){
+  return function(err, data){
+    if(err){
+      console.error('Could not cache trucks. Error: $s', err);
+      return;
+    }
+    callback(data);
+  }
 };
 
 TruckCache.prototype = Object.create(EventEmitter.prototype);
@@ -24,37 +36,28 @@ TruckCache.prototype.preFetch = function() {
   var coordinates = [];
   console.log('Attempting to cache truck locations');
   truckService.findAll()
-    .then(function(data){
-
+    .then(function(trucks){
+      // start transaction
       multi = client.multi();
 
-
-
-      for(var i = 0; i < data.length; i++){
-
-        var truck = data[i];
+      trucks.forEach(function(truck) {
         var truck_id = 'truck:' + truck.objectid;
-        if(!truck.objectid||!truck.latitude||!truck.longitude){
-          continue;
-        }
 
-        multi.set(truck_id, JSON.stringify(truck), function(err){
-          coordinates.push([this.truck.latitude,this.truck.longitude, this.truck_id]);
-        }.bind({truck:truck, truck_id: truck_id}));
-      }
-
-      multi.exec(function( err, replies ){
-        if(err){
-          console.error('Could not cache locations');
+        if(_.any([truck.objectid,truck.latitude,truck.longitude], _.isUndefined)){
+          return;
         }
-        proximity.addCoordinates(coordinates,function(err, reply){
-          if(err){
-            console.error('Could not cache locations');
-          }
-          console.log(coordinates.length + ' locations cached in Redis');
-        });
+        multi.set(truck_id, JSON.stringify(truck), _ifSuccessful(function(){
+            coordinates.push([this.truck.latitude,this.truck.longitude, this.truck_id]);
+          }.bind({truck:truck, truck_id: truck_id})
+        ));
       });
 
+      // execute transaction
+      multi.exec(_ifSuccessful(function(){
+        proximity.addCoordinates(coordinates,_ifSuccessful(function(){
+          console.log(coordinates.length + ' locations cached in Redis');
+        }));
+      }));
     });
 };
 
