@@ -7,7 +7,7 @@ var express = require('express'),
   config = require('./config'),
   app = express(),
   truckController = require('./controller/truckController')
-  truckCache = require('./util/truckCache');
+  TruckCache = require('./util/truckCache');
 
 if(config.port === undefined){
   console.error('Please source appropiate .env file before running');
@@ -24,6 +24,7 @@ app.use(function(req, res, next){
 app.get('/findInRect/:lat1/:lng1/:lat2/:lng2', truckController.findInRect);
 
 // geohashes trucks into redis
+var truckCache = new TruckCache();
 truckCache.initialize();
 
 app.listen(config.port,function(){

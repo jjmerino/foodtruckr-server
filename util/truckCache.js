@@ -3,15 +3,24 @@
  * The initialize() function should be called on server start.
  */
 
+var EventEmitter =  require('events').EventEmitter;
 var truckRepository = require('../model/truckRepository');
 var redisGeohash = require('./redisGeohash');
 var client = redisGeohash.client;
 var proximity = redisGeohash.proximity;
 
+var TruckCache = function() {
+  this.interval = null;
+};
+
+TruckCache.prototype = Object.create(EventEmitter.prototype);
+
+TruckCache.prototype.constructor = TruckCache;
+
 /**
  * fetches all trucks and stores them in redis
  */
-var preFetch = function(){
+TruckCache.prototype.preFetch = function() {
   var multi;
   var coordinates = [];
   console.log('Attempting to cache truck locations');
@@ -47,13 +56,24 @@ var preFetch = function(){
       });
 
     });
-
 };
 
 /**
  * Initializes the module, which will make it fetch the truck list every hour.
  */
-module.exports.initialize = function(){
-  preFetch();
-  setInterval(preFetch, 60*60*1000);
+TruckCache.prototype.initialize = function() {
+  this.preFetch();
+
+  this.on('update', this.preFetch);
+  // trigger update event every 60 minutes
+  this.interval = setInterval(function() {
+    cache.emit('update');
+  }.bind(this), 60 * 60 * 1000);
 };
+
+TruckCache.prototype.end = function() {
+  this.removeAllListeners('update');
+  clearInterval(this.interval);
+};
+
+module.exports = TruckCache;

@@ -1,7 +1,6 @@
 var expect = require('chai').expect;
 var request = require('supertest');
 var app = require('./../index.js');
-console.log(app);
 var truckController = require('../controller/truckController.js');
 describe('truckController', function(){
 
