@@ -29,3 +29,6 @@ truckCache.initialize();
 app.listen(config.port,function(){
   console.log('Listening on port ', config.port);
 });
+
+module.exports = app;
+
