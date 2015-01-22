@@ -71,7 +71,7 @@ TruckCache.prototype.initialize = function() {
   this.on('update', this.preFetch);
   // trigger update event every 60 minutes
   this.interval = setInterval(function() {
-    cache.emit('update');
+    this.emit('update');
   }.bind(this), 60 * 60 * 1000);
 };
 
