@@ -1,5 +1,5 @@
 var EventEmitter =  require('events').EventEmitter;
-var truckRepository = require('../model/truckRepository');
+var truckService = require('./truckService');
 var redisGeohash = require('./redisGeohash');
 var client = redisGeohash.client;
 var proximity = redisGeohash.proximity;
@@ -23,7 +23,7 @@ TruckCache.prototype.preFetch = function() {
   var multi;
   var coordinates = [];
   console.log('Attempting to cache truck locations');
-  truckRepository.findAll()
+  truckService.findAll()
     .then(function(data){
 
       multi = client.multi();

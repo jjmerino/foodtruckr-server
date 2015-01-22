@@ -1,10 +1,7 @@
-/*
+/**
  * This module provides useful geo related math functions
  */
-
-
 var GeoMath = function(){
-
 };
 
 /**
