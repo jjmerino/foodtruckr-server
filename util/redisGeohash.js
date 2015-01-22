@@ -6,16 +6,11 @@ var proximity = require('geo-proximity');
 /**
  * Initializes the redis client and the geohashing library
  */
-var RedisGeohash = function(){
+var RedisGeohash = function(port, hostname, auth){
 
-    this.client = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
-
-    // rediscloud requires authentication
-    if(process.env.REDISCLOUD_URL){
-        this.client.auth(redisURL.auth.split(":")[1]);
-    }
-
+    this.client = redis.createClient(port, hostname, {no_ready_check: true});
+    if(auth){ this.client.auth(auth); }
     this.proximity = proximity.initialize(this.client,"truck:locations");
 };
-
-module.exports = new RedisGeohash();
+var auth = process.env.REDISCLOUD_URL ? redisURL.auth.split(":")[1] : false;
+module.exports = new RedisGeohash(redisURL.port, redisURL.hostname, auth);
