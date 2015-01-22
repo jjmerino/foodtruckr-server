@@ -32,6 +32,8 @@ As stated before, the goal of this solution is mainly to provide an efficient wa
 * The truck ids are then indexed by geohashing the coordinates, this allows to do ultra fast proximity searches.
 * A drawback from using Geohashing is that the proximity lookup is approximate. This is not an issue since we don't require super precise distance comparison and we are optimizing for speed.
 * Note that the performance gain from geohashing may not very high because we currently hold only 600+ trucks, but it would matter down the road if we account for more cities or services.
+ 
+
 ### File structure
 All files contain a comment block on top that describes their purpose. The following is an overview.
 
