@@ -1,11 +1,11 @@
-/*
- * This module initializes the redis client and the geohashing library
- */
-
 var url = require('url');
 var redisURL = url.parse(process.env.REDISCLOUD_URL || 'redis://localhost:6379');
 var redis = require('redis');
 var proximity = require('geo-proximity');
+
+/**
+ * Initializes the redis client and the geohashing library
+ */
 var RedisGeohash = function(){
 
     this.client = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});

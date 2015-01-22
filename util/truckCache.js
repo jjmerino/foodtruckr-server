@@ -1,14 +1,13 @@
-/*
- * This module handles periodically fetching the complete truck list and storing it in redis using geohashing.
- * The initialize() function should be called on server start.
- */
-
 var EventEmitter =  require('events').EventEmitter;
 var truckRepository = require('../model/truckRepository');
 var redisGeohash = require('./redisGeohash');
 var client = redisGeohash.client;
 var proximity = redisGeohash.proximity;
 
+/**
+ * Handles periodically fetching the complete truck list and storing it in redis using geohashing.
+ * The initialize() method should be called on server start.
+ */
 var TruckCache = function() {
   this.interval = null;
 };
@@ -71,6 +70,9 @@ TruckCache.prototype.initialize = function() {
   }.bind(this), 60 * 60 * 1000);
 };
 
+/**
+ * Stops fetching from the API
+ */
 TruckCache.prototype.end = function() {
   this.removeAllListeners('update');
   clearInterval(this.interval);
