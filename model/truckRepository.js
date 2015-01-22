@@ -1,12 +1,12 @@
 var q = require('q');
 var distance = require('../util/geomath').distance;
 var redisGeohash = require('../util/redisGeohash');
-var client = redisGeohash.client;
-var proximity = redisGeohash.proximity;
 /**
  * This module provides an abstraction layer to query the cached trucks from redis.
  */
-var TruckRepository = function(){
+var TruckRepository = function(redisGeohash){
+  this.proximity = redisGeohash.proximity;
+  this.client = redisGeohash.client;
 };
 
 /**
@@ -15,16 +15,13 @@ var TruckRepository = function(){
 TruckRepository.prototype.findInArea = function(lat1,lng1,lat2,lng2){
 
   var d = q.defer();
-
   var multi;
-
   var center = [(lat1 + lat2)/2,(lng1 + lng2)/2];
-
   var dist = distance(lat1,lng1,lat2,lng2)*500;
 
-  proximity.query(center[0],center[1],dist, function(err, idList){
+  this.proximity.query(center[0],center[1],dist, function(err, idList){
     if(err){ console.log(err); }
-    multi = client.multi();
+    multi = this.client.multi();
     idList.forEach(function(truckid){
       multi.get(truckid);
     });
@@ -38,9 +35,9 @@ TruckRepository.prototype.findInArea = function(lat1,lng1,lat2,lng2){
       });
       d.resolve(result);
     })
-  });
+  }.bind(this));
   return d.promise;
 };
 
-module.exports = new TruckRepository();
+module.exports = new TruckRepository(redisGeohash);
 
