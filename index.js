@@ -21,7 +21,7 @@ app.use(function(req, res, next){
 });
 
 // configure routes to the controllers
-app.get('/findInRect/:lat1/:lng1/:lat2/:lng2', truckController.findInRect);
+app.get('/findInRect/:lat1/:lng1/:lat2/:lng2', truckController.findInArea);
 
 // geohashes trucks into redis
 var truckCache = new TruckCache();

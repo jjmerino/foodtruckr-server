@@ -17,7 +17,7 @@ var TruckService = function(){
  * @param lng2
  * @returns {promise|*|Q.promise}
  */
-TruckService .prototype.findInRect = function(lat1,lng1,lat2,lng2){
+TruckService .prototype.findInArea = function(lat1,lng1,lat2,lng2){
   var d = q.defer();
 
   // Query construction

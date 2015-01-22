@@ -29,6 +29,7 @@ TruckCache.prototype.preFetch = function() {
       multi = client.multi();
 
 
+
       for(var i = 0; i < data.length; i++){
 
         var truck = data[i];

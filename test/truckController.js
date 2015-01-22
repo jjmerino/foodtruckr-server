@@ -4,8 +4,8 @@ var app = require('./../index.js');
 var truckController = require('../controller/truckController.js');
 describe('truckController', function(){
 
-  it('should have a findInRect function', function(){
-    expect(typeof truckController.findInRect).to.equal('function');
+  it('should have a findInArea function', function(){
+    expect(typeof truckController.findInArea).to.equal('function');
   });
 });
 

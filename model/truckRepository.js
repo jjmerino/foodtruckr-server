@@ -19,7 +19,7 @@ var TruckRepository = function(){
  * @param lng2
  * @returns {promise|*|Q.promise}
  */
-TruckRepository.prototype.findInRect = function(lat1,lng1,lat2,lng2){
+TruckRepository.prototype.findInArea = function(lat1,lng1,lat2,lng2){
 
   var d = q.defer();
 
