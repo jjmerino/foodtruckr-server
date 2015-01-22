@@ -6,7 +6,7 @@
 var express = require('express'),
   config = require('./config'),
   app = express(),
-  truckController = require('./controller/truckController')
+  truckController = require('./controller/truckController'),
   TruckCache = require('./util/truckCache');
 
 if(config.port === undefined){

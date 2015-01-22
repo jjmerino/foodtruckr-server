@@ -4,17 +4,18 @@
 
 var url = require('url');
 var redisURL = url.parse(process.env.REDISCLOUD_URL || 'redis://localhost:6379');
-
 var redis = require('redis');
-var client = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
+var proximity = require('geo-proximity');
+var RedisGeohash = function(){
 
-// rediscloud requires authentication
-if(process.env.REDISCLOUD_URL){
-    client.auth(redisURL.auth.split(":")[1]);
-}
+    this.client = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
 
-var proximity = require('geo-proximity')
-    .initialize(client,"truck:locations");
+    // rediscloud requires authentication
+    if(process.env.REDISCLOUD_URL){
+        this.client.auth(redisURL.auth.split(":")[1]);
+    }
 
-module.exports.client = client;
-module.exports.proximity = proximity;
+    this.proximity = proximity.initialize(this.client,"truck:locations");
+};
+
+module.exports = new RedisGeohash();
