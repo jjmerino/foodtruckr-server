@@ -32,7 +32,7 @@ TruckRepository.prototype.findInArea = function(lat1,lng1,lat2,lng2){
         return;
       }
       var result = truckList.map(function(truck){
-        return new Truck(truck);
+        return new Truck(JSON.parse(truck));
       });
       d.resolve(result);
     })

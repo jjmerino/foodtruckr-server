@@ -23,4 +23,15 @@ describe('GET /findInRect/...', function(){
 
   });
 
+  it('regression: should contain entity properties', function(done){
+
+    request(app)
+      .get('/findInRect/37.75419228778776/-122.42421627044679/37.775226388320405/-122.39735126495361')
+      .expect(200)
+      .end(function(err,res){
+        expect(res.body[0]).to.have.property('objectid');
+        done();
+      });
+
+  });
 });
