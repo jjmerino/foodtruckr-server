@@ -1,6 +1,7 @@
 var q = require('q');
 var distance = require('../util/geomath').distance;
 var redisGeohash = require('../util/redisGeohash');
+var Truck = require('./truckEntity');
 /**
  * This module provides an abstraction layer to query the cached trucks from redis.
  */
@@ -31,7 +32,7 @@ TruckRepository.prototype.findInArea = function(lat1,lng1,lat2,lng2){
         return;
       }
       var result = truckList.map(function(truck){
-        return JSON.parse(truck);
+        return new Truck(truck);
       });
       d.resolve(result);
     })

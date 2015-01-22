@@ -4,7 +4,7 @@ var redis = require('redis');
 var proximity = require('geo-proximity');
 
 /**
- * Initializes the redis client and the geohashing library
+ * Initializes the redis client and the geohashing library for accessing data in redis
  */
 var RedisGeohash = function(port, hostname, auth){
 

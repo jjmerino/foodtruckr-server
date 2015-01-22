@@ -3,6 +3,7 @@ var truckService = require('./truckService');
 var redisGeohash = require('./redisGeohash');
 var client = redisGeohash.client;
 var proximity = redisGeohash.proximity;
+var Truck = require('../model/truckEntity');
 var _ = require('lodash');
 
 /**
@@ -40,7 +41,7 @@ TruckCache.prototype._persistTrucks = function(trucks){
     if(_.any([truck.objectid,truck.latitude,truck.longitude], _.isUndefined)){
       return;
     }
-    multi.set(truckId, JSON.stringify(truck), _ifSuccessful(function(){
+    multi.set(truckId, truck.serialize(), _ifSuccessful(function(){
         coordinates.push([this.truck.latitude,this.truck.longitude, this.truckId]);
       }.bind({truck:truck, truckId: truckId})
     ));

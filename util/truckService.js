@@ -1,8 +1,8 @@
 var q = require('q');
 var request = require('request');
-
+var Truck = require('../model/truckEntity');
 /**
- * Fetches all trucks. Use sparingly.
+ * Fetches all trucks. Use sparingly. returns a Truck entity array
  */
 exports.findAll = function(){
   var d = q.defer();
@@ -15,7 +15,10 @@ exports.findAll = function(){
         console.error(err);
         return d.reject(err);
       }
-      d.resolve(JSON.parse(res.body));
+      // parse the trucks using our Truck entity
+      d.resolve(JSON.parse(res.body).map(function(truck){
+        return new Truck(truck);
+      }));
     }
   );
   return d.promise;
