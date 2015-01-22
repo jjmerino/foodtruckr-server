@@ -1,5 +1,17 @@
 # Foodtruckr
 
+
+- [Foodtruckr](#foodtruckr)
+    - [Description of the problem and solution](#description-of-the-problem-and-solution)
+    - [Scope and focus of the solution](#scope-and-focus-of-the-solution)
+    - [Back end Considerations](#back-end-considerations)
+        - [High performance with Redis and Geohashing](#high-performance-with-redis-and-geohashing)
+        - [Environments](#environments)
+        - [Node JS decisions](#node-js-decisions)
+        - [Missing things ( Back end ), a.k.a next steps / roadmap](#missing-things--back-end--aka-next-steps--roadmap)
+    - [Front end Considerations](#front-end-considerations)
+    - [Repository considerations](#repository-considerations)
+
 ### Description of the problem and solution
 
 The FoodTruckr Service tells the user what types of food trucks might be found near a specific location on a map.
