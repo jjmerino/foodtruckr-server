@@ -6,6 +6,7 @@
     - [Scope and focus of the solution](#scope-and-focus-of-the-solution)
     - [Back end Considerations](#back-end-considerations)
         - [High performance with Redis and Geohashing](#high-performance-with-redis-and-geohashing)
+        - [File Structure](#file-structure)
         - [Environments](#environments)
         - [Node JS decisions](#node-js-decisions)
         - [Missing things ( Back end ), a.k.a next steps / roadmap](#missing-things--back-end--aka-next-steps--roadmap)
