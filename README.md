@@ -50,14 +50,17 @@ An `set_env.sh` script has been provided to set environments. This is not needed
 * Since application is small, route paths are configured in the index.js file, but the actual logic is delegated to controllers in the controller folder.
 * Access to the Trucks API (DataSF) is abstracted using the Repository pattern.
 
-### Missing things, a.k.a next steps 
-If I were to continue to work on this project the main things to do differently would be:
+### Missing things, and next steps 
+If I were to continue to work on this project the main things to do differently would be (in order of priority):
 * Automated tests. The test files are there, but they are empty. Having a single route to maintain, technical debt was small enough to focus on the functionality and performance before testing. But clearly it would be one of the first things to address if I wanted to add more functionality.
-* Use Travis or another CI provider.
 * More workflow automation. Currently my Gruntfile is not very complete.
-* Maybe move the truckCache module into its own microservice (popular these days!)
-* Implement a message queue for a logging solution. Maybe RabbitMQ or an ELK stack.
-* Include more services, APIs!
+* Use Travis or another CI provider.
+* Maybe move the truckCache module into its own micro service (popular word these days)
+* Implement a RabbitMQ message queue for a logging solution and other tasks, including the truckCache.
+* Serve the static files (front end) from a CDN. 
+* Include more services, cities, APIs.
+* Move into EC2, DigitalOcean or another virtual server provider, for more control, then put the Redis server closer. Rediscloud has been giving me some unwanted extra latency that makes my redis caching idea seem dumb.
+* Try some HAProxy for horizontal nodejs scaling!
 
 ## Front end Considerations
 
