@@ -42,11 +42,9 @@ An `set_env.sh` script has been provided to set environments. This is not needed
 
 ### Missing things ( Back end ), a.k.a next steps / roadmap
 If I were to continue to work on this project the main things to do differently would be:
-* Automated tests. The test files are there, but they are empty. Having a single route to maintain, technical debt was small enough to focus on the functionality and performance before testing. But clearly it is one of the first things to address if I want to add more functionality.
-* Refactor the trucks controller, currently it handles direct redis calls which is very bad. I would create an abstraction layer to the redis instance.
-* Refactor the trucks controller again. It currently pre fetches the truck list. This should be put into its own service and run from the index file.
-* Travis or another CI provider.
-* More workflow automation. Currently my Gruntfile is not worthy of admiration...
+* Automated tests. The test files are there, but they are empty. Having a single route to maintain, technical debt was small enough to focus on the functionality and performance before testing. But clearly it would be one of the first things to address if I wanted to add more functionality.
+* Use Travis or another CI provider.
+* More workflow automation. Currently my Gruntfile is not very complete.
 
 
 ## Front end Considerations
