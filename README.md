@@ -25,52 +25,74 @@ The data originally comes form [DataSF](http://www.datasf.org/): [Food
 Trucks](https://data.sfgov.org/Permitting/Mobile-Food-Facility-Permit/rqzj-sfat). But to make the service faster and resilient to DataSF's availability (e.g. the dataset was offline on the evening of January 17th 2015), the API server hourly caches the food truck list into Redis.
 
 ### Scope and focus of the solution
-As mentioned earlier, the service consists of both a Backend and Frontend solution, therefore is a full-stack solution, but **the main focus of the solution is on the backend providing a fast and resilient way of accessing the food truck data** and providing it to the front end. Therefore, you may find the UX is not curated.
+As mentioned earlier, the service consists of both a Backend and Frontend solution, therefore is a full-stack solution, but **the main focus of the solution is on the backend providing a fast and resilient way of accessing the food truck data** and providing it to the front end. Feel free to look at the front end architecture as well, but do not expect much from the UX.
 
-## Back end Considerations
+## Back end considerations
 
-### High performance with Redis and Geohashing
-As stated before, the goal of this solution is mainly to provide an efficient way of serving the truck data to the API consumers and the front end. Keeping this in mind:
+### Stack High performance with Redis and Geohashing
+As stated before, my main goal with this solution was to provide to the best of my abilities, an efficient way of serving the truck data to the API consumers and the front end. Keeping this in mind:
 * The app caches the truck list into Redis hourly to avoid relying on the external API, and providing fast access to the data.
 * The truck ids are then indexed by geohashing the coordinates, this allows to do ultra fast proximity searches.
-* A drawback from using Geohashing is that the proximity lookup is approximate. This is not an issue since we don't require super precise distance comparison and we are optimizing for speed.
-* Note that the performance gain from geohashing may not very high because we currently hold only 600+ trucks, but it would matter down the road if we account for more cities or services.
- 
+
+To do this the following stack was used:
+* Node JS application fetches the trucks, stores them, and serves them back through an API.
+* Redis is used to store the trucks 
+* BackboneJS on the front end
+
+Deployment was done in heroku for it's easy setup. 
 
 ### File structure
-All files contain a comment block on top that describes their purpose. The following is an overview.
-
-* index.js: loads the app, starts my redis cache utility and maps routes to the controllers.
-* controller folder: this modules are responsible for the logic for specific routes. Currently there is only one route and one controller.
-* model folder: this modules are abstraction layers to sources of data.
-* util folder: this modules are utilities and service providers.
-  * geomath.js: provides some math functions. Currently only one
-  * redisGeohash.js: configures and returns the redis client and proximity library instance
-  * truckCache.js: service that queries the DataSF API periodically and stores the data into Redis.
-
+```
+├── Gruntfile.js        
+├── Procfile
+├── README.md 
+├── config.js               // loads env variables
+├── controller
+│   └── truckController.js  // handles route logic
+├── dev.env
+├── index.js                // starts the application
+├── model
+│   ├── truckEntity.js      // defines a schema for consistently passing in trucks arround the app
+│   └── truckRepository.js  // provides an abstraction to fetch trucks from redis
+├── package.json
+├── prod.env
+├── set_env.sh              // sources environment variables
+├── test
+│   ├── truckController.js
+│   └── truckr.js           
+└── util
+    ├── geomath.js          // provides some math functions
+    ├── redisGeohash.js     // instanciates the redis client and a geohashing library     
+    ├── truckCache.js       // fetches trucks and caches them periodically
+    └── truckService.js     // provides an abstraction to the DataSF api
+```
 ### Environments
-An `set_env.sh` script has been provided to set environments. This is not needed in heroku since I set my variables in the admin panel but may be usefull if I need to deploy to EC2 in the future or automate my infrastructure.
+The app uses environment variables for its configuration. An `set_env.sh` script has been provided to set environments.
 
-### Node JS decisions
-* Since application is small, route paths are configured in the index.js file, but the actual logic is delegated to controllers in the controller folder.
-* Access to the Trucks API (DataSF) is abstracted using the Repository pattern.
+### Architectural decisions and design patterns
+* Route paths are configured in the index.js file, but the actual logic is delegated to controllers in the controller folder.
+* Following MVC, the truck data is always wrapped in a Truck entity (model) while passed arround in the app. This also trims unused fields for us and make our app store only what it needs.
+* The proximty library has a strong dependency on redis so they have been wrapped into a module using a Factory pattern
+* The trucks are accessed using a Repository pattern over redis.
+* The trucks are fetched from the external API using a Service pattern
 
-### Missing things, and next steps 
+### Missing things and next steps 
 If I were to continue to work on this project the main things to do differently would be (in order of priority):
-* Automated tests. The test files are there, but they are empty. Having a single route to maintain, technical debt was small enough to focus on the functionality and performance before testing. But clearly it would be one of the first things to address if I wanted to add more functionality.
-* More workflow automation. Currently my Gruntfile is not very complete.
-* Test and handle edge cases.
+* More automated tests. Currently there is only a couple integration test for the API end point. I.e it fails when something breaks but doesn't tell you where. This didn't impact development velocity since the app is very small. I would definitely add more tests if the app were to grow.
+* More workflow automation.
 * Use Travis or another CI provider.
-* Maybe move the truckCache module into its own micro service (popular word these days)
-* Implement a RabbitMQ message queue for a logging solution and other tasks, including the truckCache.
-* Serve the static files (front end) from a CDN. 
-* Include more services, cities, APIs.
-* Move into EC2, DigitalOcean or another virtual server provider, for more control, then put the Redis server closer. Rediscloud has been giving me some unwanted extra latency that makes my redis caching idea seem dumb.
-* Try some HAProxy for horizontal nodejs scaling!
+* Remove the truckCache module completely into its own microservice, for a more service oriented architecture.
+* Implement a RabbitMQ message queue for a logging solution and for splitting the app into smaller services (see previous point).
+* Serve the static files (front end) from a CDN.
+* Include more services, cities, APIs. 
+* Scaling horizontally with HAProxy load balancing user requests.
+
+## Repositories
+I have separated backend from front end in different repositories because it would be more consistent in case I need to add native applications (i.e third and fourth repositories independent from this one).
+
+Also it keeps the 2 deploy cicles completely separate which allows me to focus on one part of the solution at a time.
+
 
 ## Front end Considerations
 
 For the front end side of things, see [The front end repository](https://github.com/jjmerino/foodtruckr-web)
-
-## Repository considerations
-Note: I have separated backend from front end in different repositories because it would be more consistent in case I need to add native applications (i.e third and fourth repositories independent from this one).
