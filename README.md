@@ -29,7 +29,7 @@ As mentioned earlier, the service consists of both a Backend and Frontend soluti
 
 ## Back end considerations
 
-### Stack High performance with Redis and Geohashing
+### High performance with Redis and Geohashing
 As stated before, my main goal with this solution was to provide to the best of my abilities, an efficient way of serving the truck data to the API consumers and the front end. Keeping this in mind:
 * The app caches the truck list into Redis hourly to avoid relying on the external API, and providing fast access to the data.
 * The truck ids are then indexed by geohashing the coordinates, this allows to do ultra fast proximity searches.
