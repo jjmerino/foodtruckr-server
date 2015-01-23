@@ -1,7 +1,7 @@
 # Foodtruckr
+This is the repository for the FoodTruckr bach end. For the front end, see see [The front end repository](https://github.com/jjmerino/foodtruckr-web)
 
-Try it:
-http://foodtruckr.herokuapp.com/#
+To try the app: http://foodtruckr.herokuapp.com/#
 
 - [Foodtruckr](#foodtruckr)
     - [Description of the problem and solution](#description-of-the-problem-and-solution)
@@ -25,7 +25,7 @@ The data originally comes form [DataSF](http://www.datasf.org/): [Food
 Trucks](https://data.sfgov.org/Permitting/Mobile-Food-Facility-Permit/rqzj-sfat). But to make the service faster and resilient to DataSF's availability (e.g. the dataset was offline on the evening of January 17th 2015), the API server hourly caches the food truck list into Redis.
 
 ### Scope and focus of the solution
-As mentioned earlier, the service consists of both a Backend and Frontend solution, therefore is a full-stack solution, but **the main focus of the solution is on the backend providing a fast and resilient way of accessing the food truck data** and providing it to the front end. Feel free to look at the front end architecture as well, but do not expect much from the UX.
+As mentioned earlier, the service consists of both a Backend and Frontend solution, therefore is a full-stack solution, but **the main focus of the solution is on the backend side providing a fast and resilient way of accessing the food truck data** and providing it to the front end. [A front end](https://github.com/jjmerino/foodtruckr-web) has been provided as well for completeness, feel free to review the code and architecture, but do not expect much from the UX.
 
 ## Back end considerations
 
