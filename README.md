@@ -1,7 +1,7 @@
 # Food truckr Dummy App
 This is a dummy app repository for the FoodTruckr back End. For the front end, see see [The front end repository](https://github.com/jjmerino/foodtruckr-web)
 
-To try the dummy app: http://foodtruckr.herokuapp.com/#
+To try the dummy app: http://foodtruckr.herokuapp.com/# (May work slowly at first, let those heroku dynos turn on!)
 
 - [Foodtruckr](#foodtruckr)
     - [Description of the problem and solution](#description-of-the-problem-and-solution)
